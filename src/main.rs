@@ -98,7 +98,13 @@ impl eframe::App for AdbPush {
                     ui.text_edit_singleline(&mut self.target_path)
                         .on_hover_text("Enter target path");
                     if ui.button("Send").clicked() {
-                        self.send_files();
+                        if self.dropped_files.is_empty() {
+                            self.output.push("No files to send.".to_string());
+                        } else if self.device == "No valid device." {
+                            self.output.push("No valid device connected.".to_string());
+                        } else {
+                            self.send_files();
+                        }
                     }
                 });
             });
